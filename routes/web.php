@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('admin/create', [AdminController::class, 'create'])->name('admin.create');
+Route::post('admin/store', [AdminController::class, 'store'])->name('admin.store');
+
+Route::get('menu', function () {
+    return view('menu.index');
+});
+
