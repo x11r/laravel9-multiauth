@@ -24,4 +24,8 @@ Route::post('admin/store', [AdminController::class, 'store'])->name('admin.store
 Route::get('menu', function () {
     return view('menu.index');
 });
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
+require __DIR__.'/auth.php';
