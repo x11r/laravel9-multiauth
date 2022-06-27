@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,17 @@ Route::post('admin/store', [AdminController::class, 'store'])->name('admin.store
 Route::get('menu', function () {
     return view('menu.index');
 });
+Route::group([
+    'prefix' => 'member',
+     'as' => 'member.',
+     'middleware' => 'auth',
+], function () {
+    Route::get('top', [MemberController::class, 'top']);
+    Route::resources([
+        'users' => UserController::class,
+    ]);
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
