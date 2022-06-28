@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberLoginController;
+use App\Http\Controllers\MemberUserController;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\UserMemberController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MemberController;
@@ -25,26 +28,26 @@ Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
 Route::get('admin/create', [AdminController::class, 'create'])->name('admin.create');
 Route::post('admin/store', [AdminController::class, 'store'])->name('admin.store');
 
-Route::get('menu', function () {
-    return view('menu.index');
-});
+Route::get('/menu', [HomeController::class, 'menu'])->name('home');
 
 // 勉強用なので、 membersからusersの認証を変更できるような作りにする
-Route::get('/member-login', [MemberLoginController::class, 'login'])->name('member.login');
-Route::post('member-login', [MemberLoginController::class, 'auth'])->name('member.auth');
-Route::group(['prefix' => 'member', 'as' => 'member.', 'middleware' => 'auth:member'], function () {
-    Route::get('/', [MemberController::class, 'top'])->name('top');
+Route::get('/member/{member_dir}/login', [MemberLoginController::class, 'login'])->name('member.login');
+Route::post('/member/{member_dir}/login', [MemberLoginController::class, 'authenticate'])->name('member.authenticate');
+Route::get('/member/logout', [MemberLoginController::class, 'logout'])->name('member.logout');
+Route::group(['prefix' => 'member/{member_dir}', 'as' => 'member.', 'middleware' => 'auth:member'], function () {
+    Route::get('/', [MemberUserController::class, 'top'])->name('top');
     Route::resources([
-        'users' => UserController::class,
+        'users' => MemberUserController::class,
     ]);
 });
 
-Route::get('user-login', [UserLoginController::class, 'login'])->name('user.login');
-Route::post('user-login', [UserLoginController::class, 'auth'])->name('user.auth');
-Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth'], function() {
-	Route::get('/', [UserController::class, 'top'])->name('top');
+Route::get('/user/login', [UserLoginController::class, 'login'])->name('user.login');
+Route::post('/user/login', [UserLoginController::class, 'authenticate'])->name('user.auth');
+Route::get('/user/logout', [UserLoginController::class, 'logout'])->name('user.logout');
+Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth:user'], function() {
+	Route::get('/', [UserMemberController::class, 'top'])->name('top');
 	Route::resources([
-		'members' => MemberController::class,
+		'members' => UserMemberController::class,
 	]);
 });
 

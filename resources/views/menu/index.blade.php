@@ -8,10 +8,22 @@
 <body>
     <div>
         <h1>menu</h1>
-        <ul>
-            <li><a href="/member/top">member/top</a></li>
-
-        </ul>
+        <h2>members</h2>
+        <div>
+            <ul>
+                @foreach ($members as $member)
+                    <li>
+                        <a href="{{ route('member.top', ['member_dir' => $member->url]) }}">
+                            {{ $member->name }}({{ $member->email }}) ({{ $member->url }})
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+        <h2>User</h2>
+        <div>
+            <a href="{{ route('user.top') }}">user.top</a>
+        </div>
     </div>
     <div>
         認証メール再送信

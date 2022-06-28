@@ -5,13 +5,22 @@
         <h1>
             user login
         </h1>
+        @if ($errors->any())
+            <div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         {{ Form::open(['route' => 'user.auth']) }}
         <div>
             <div class="col-md-2">
                 email
             </div>
             <div class="col-md-8">
-                {{ Form::text('email', old('email'), ['class' => 'form-control ']) }}
+                {{ Form::text('email', old('email'), ['class' => 'form-control', 'size' => '40']) }}
             </div>
         </div>
         <div>
@@ -19,7 +28,7 @@
                 password
             </div>
             <div class="col-md-8">
-                {{ Form::text('empasswordail', old('password'), ['class' => 'form-control ']) }}
+                {{ Form::text('password', old('password'), ['class' => 'form-control', 'size' => '40']) }}
             </div>
         </div>
         <div class="col-md-10">

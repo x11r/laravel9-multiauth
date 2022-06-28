@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable('ログイン用メールアドレス');
-			$table->string('url')->comment('アクセスできるURL');
+			$table->string('url')->unique()->comment('アクセスできるURL');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('password_plain')->nullable();

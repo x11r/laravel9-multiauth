@@ -5,9 +5,8 @@
     <div>
         <div class="col-md-10">
             <div>
-                <a href="{{ route('member.users.create') }}">新規</a>
+                <a href="{{ route('member.users.create', ['member_dir' => $memberDir]) }}">新規</a>
             </div>
-
 
             @foreach ($users as $user)
                 <div class="rows">
@@ -18,7 +17,7 @@
                         {{ $user->email }}
                     </div>
                     <div>
-                        <a href="{{ route('member.users.edit', ['user' => $user]) }}">edit</a>
+                        <a href="{{ route('member.users.edit', ['member_dir' => $memberDir,'user' => $user]) }}">edit</a>
                     </div>
                 </div>
             @endforeach

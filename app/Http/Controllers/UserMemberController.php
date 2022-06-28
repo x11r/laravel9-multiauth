@@ -2,25 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Http\Requests\Member\User\CreateRequest as MemberUserCreateRequest;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Member;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class UserMemberController extends Controller
 {
-
-    public function __construct()
-    {
-        //
-    }
-
-	public function top()
-	{
-		return view('user.top');
-	}
-
     /**
      * Display a listing of the resource.
      *
@@ -28,13 +14,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->orderBy('created_at', 'desc')->get();
+        //
+	    $members = Member::query()->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
 		$params = [
-			'users' => $users,
+			'members' => $members,
 		];
 
-        return view('member.user.index', $params);
+		return view('user.member.index', $params);
     }
+
+	public function top()
+	{
+		return $this->index();
+	}
 
     /**
      * Show the form for creating a new resource.
@@ -44,7 +36,6 @@ class UserController extends Controller
     public function create()
     {
         //
-	    return view('member.user.create');
     }
 
     /**
@@ -53,21 +44,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MemberUserCreateRequest $request)
+    public function store(Request $request)
     {
-		$user = new User;
-
-		$userFill = [
-			'name' => $request->input('name'),
-			'email' => $request->input('email'),
-			'password' => Hash::make($request->input('password')),
-		];
-
-		$user->fill($userFill)->save();
-
-	    event(new Registered($user));
-
-	    return redirect()->route('member.users.index');
+        //
     }
 
     /**
@@ -89,12 +68,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-	    $user = User::where('id', $id)->first();
-		$params = [
-			'user' => $user,
- 		];
-
-		return view('member.user.edit', $params);
+        //
     }
 
     /**

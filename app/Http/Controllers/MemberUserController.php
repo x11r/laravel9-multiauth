@@ -2,28 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class MemberController extends Controller
+class MemberUserController extends Controller
 {
-
-	public function __construct()
-	{
-		
-	}
-	public function top()
-	{
-		return view('member.top');
-	}
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($memberDir)
     {
         //
+	    $users = User::query()->orderBy('created_at', 'desc')->get();
+	    $params = [
+		    'users' => $users,
+		    'memberDir' => $memberDir,
+	    ];
+
+	    return view('member.user.index', $params);
     }
+
+	public function top($memberDir)
+	{
+		$params = [
+			'memberDir' => $memberDir,
+		];
+
+		return view('member.top', $params);
+//		return redirect()->route('member.users.index', ['member_dir' => $member_dir]);
+	}
 
     /**
      * Show the form for creating a new resource.
